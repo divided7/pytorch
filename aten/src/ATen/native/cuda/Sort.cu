@@ -11,8 +11,8 @@
 #include <ATen/native/cuda/SortUtils.cuh> // 一些在CUDA环境中执行排序操作时所需的辅助函数和工具类的声明。
 #include <ATen/native/cuda/SortingCommon.cuh> // 在CUDA环境中执行排序时共享的一些常量、数据结构和算法。
 
-#include <limits>
-#include <c10/core/DeviceArray.h>
+#include <limits> // C++ 标准库中的头文件，其中包含了一些关于数值范围的常量和函数。被用来获取数据类型的最大值、最小值等信息。
+#include <c10/core/DeviceArray.h> // 包含了与 DeviceArray 类相关的声明。DeviceArray 是 PyTorch 中的一个类，用于在不同的设备上管理数据的数组。它可能提供了在 CUDA 设备上分配、释放和管理内存的方法，以及对数组数据进行操作的接口。
 
 namespace at::native {
 
