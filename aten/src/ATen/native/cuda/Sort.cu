@@ -1,15 +1,15 @@
 #define TORCH_ASSERT_NO_OPERATORS
-#include <ATen/native/cuda/Sort.h>
-#include <ATen/core/TensorBase.h>
-#include <ATen/core/Array.h>
-#include <ATen/Dispatch.h>
-#include <ATen/cuda/cub.cuh>
-#include <ATen/cuda/CUDAContext.h>
-#include <ATen/cuda/detail/KernelUtils.h>
-#include <ATen/cuda/detail/OffsetCalculator.cuh>
-#include <ATen/cuda/NumericLimits.cuh>
-#include <ATen/native/cuda/SortUtils.cuh>
-#include <ATen/native/cuda/SortingCommon.cuh>
+#include <ATen/native/cuda/Sort.h> // 在CUDA环境中执行排序相关操作的函数和类的声明。这可能包括排序算法的实现，CUDA内核的启动以及与排序相关的辅助函数。
+#include <ATen/core/TensorBase.h> // 关于张量基类 TensorBase 的声明。基类通常包含了所有张量都共享的基本功能和属性。
+#include <ATen/core/Array.h> // 关于数组类的声明，可能定义了一些在CUDA环境中处理数组数据的基本操作和工具函数。
+#include <ATen/Dispatch.h> // 关于分发机制的声明，分发机制用于根据输入参数的类型和属性选择合适的实现代码。在CUDA环境中，这可能涉及到根据不同的硬件架构和数据类型选择合适的CUDA内核。
+#include <ATen/cuda/cub.cuh> // 与CUB（CUDA Unbound）库相关的声明，CUB是一个用于CUDA编程的开源C++模板库，提供了高效的并行算法和数据结构。
+#include <ATen/cuda/CUDAContext.h> // 与CUDA上下文管理相关的声明，包括初始化CUDA设备，分配和释放CUDA内存等功能。
+#include <ATen/cuda/detail/KernelUtils.h> // 一些CUDA内核编程中常用的实用工具函数和宏定义，用于简化内核代码的编写和优化。
+#include <ATen/cuda/detail/OffsetCalculator.cuh> // 包含了用于计算CUDA内核中数据偏移量的工具函数和类的声明，这在处理多维数组时非常有用。
+#include <ATen/cuda/NumericLimits.cuh> // 包含了CUDA环境中数值限制的声明，例如最大值、最小值等。
+#include <ATen/native/cuda/SortUtils.cuh> // 一些在CUDA环境中执行排序操作时所需的辅助函数和工具类的声明。
+#include <ATen/native/cuda/SortingCommon.cuh> // 在CUDA环境中执行排序时共享的一些常量、数据结构和算法。
 
 #include <limits>
 #include <c10/core/DeviceArray.h>
