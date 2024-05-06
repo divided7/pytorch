@@ -14,10 +14,10 @@
 #include <limits> // C++ 标准库中的头文件，其中包含了一些关于数值范围的常量和函数。被用来获取数据类型的最大值、最小值等信息。
 #include <c10/core/DeviceArray.h> // 包含了与 DeviceArray 类相关的声明。DeviceArray 是 PyTorch 中的一个类，用于在不同的设备上管理数据的数组。它可能提供了在 CUDA 设备上分配、释放和管理内存的方法，以及对数组数据进行操作的接口。
 
-namespace at::native {
+namespace at::native { // 这是一个命名空间声明，指定了一系列与 PyTorch 相关的本地（native）函数
 
-template <typename T>
-static int minimum_grid_for_occupancy(T kernel, int max_block_size) {
+template <typename T> // 这是一个模板函数的声明，T 是一个占位符，表示函数可以接受不同类型的参数。这意味着函数 minimum_grid_for_occupancy 可以接受不同类型的 kernel 参数。
+static int minimum_grid_for_occupancy(T kernel, int max_block_size) {  // minimum_grid_for_occupancy函数开始
   int minGridSize = 0;
   int blockSize;
   C10_CUDA_CHECK(cudaOccupancyMaxPotentialBlockSize(
@@ -27,10 +27,10 @@ static int minimum_grid_for_occupancy(T kernel, int max_block_size) {
       /*dynamicSMemSize=*/0,
       max_block_size));
   return minGridSize;
-}
+} // 计算 CUDA 核函数执行时所需的最小网格大小，并返回这个值。这个值可以用于在 CUDA 加速的环境中配置执行核函数的线程块和网格
 
-template <typename T>
-constexpr bool has_nan() {
+template <typename T> 
+constexpr bool has_nan() {  // 定义了一个模板函数 has_nan()，用于检查给定类型 T 是否支持 NaN（Not a Number）。
   if constexpr (std::numeric_limits<T>::is_specialized) {
     return std::numeric_limits<T>::has_quiet_NaN;
   } else if constexpr (
@@ -39,12 +39,17 @@ constexpr bool has_nan() {
       std::is_same_v<T, c10::Half>) {
     return true;
   }
-}
+} // 这段代码用于在编译时确定给定类型 T 是否支持 NaN，如果支持 NaN，则返回 true，否则返回 false。
+
 
 // For very small unstable sorts (n <= 32), use bitonicSortKVInPlace
 // which can sort multiple arrays within the same block of threads,
 // improving occupancy.
-struct SmallBitonicSort {
+// 对于非常小的数据集（元素个数小于或等于 32）, 使用 bitonicSortKVInPlace 函数。
+// 该函数可以在同一块线程内对多个数组进行排序。
+// 这意味着可以在 GPU 中的一个线程块中同时对多个数组进行排序，而不是每个数组单独排序，从而提高了 GPU 的利用率和性能。
+
+struct SmallBitonicSort { // 定义了一个 SmallBitonicSort 结构体，其中包含一个模板成员函数 sort()，用于在 CUDA 环境中执行针对非常小的数据集的比特分组排序（bitonic sort）。
   template <int A, typename K, typename V, typename IndexType>
   void sort(
       at::cuda::detail::TensorInfo<K, IndexType> keyInfo,
